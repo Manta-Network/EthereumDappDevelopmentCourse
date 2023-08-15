@@ -17,12 +17,24 @@ contract Game {
     // Mapping owner address to token count
     mapping(address => uint256) private _balances;
 
+    // Mapping from token ID to approved address
+    mapping(uint256 => address) private _tokenApprovals;
+
     /**
      * @dev Emitted when `tokenId` token is transferred from `from` to `to`.
      */
     event Transfer(
         address indexed from,
         address indexed to,
+        uint256 indexed tokenId
+    );
+
+    /**
+     * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.
+     */
+    event Approval(
+        address indexed owner,
+        address indexed approved,
         uint256 indexed tokenId
     );
 
@@ -56,7 +68,7 @@ contract Game {
      *
      * Emits a {Transfer} event.
      */
-    function mint(address to, uint256 tokenId) public onlyAdmin {
+    function mint(address to, uint256 tokenId) public virtual onlyAdmin {
         require(to != address(0), "ERC721: mint to the zero address");
         require(!exists(tokenId), "ERC721: token already minted");
 
@@ -68,22 +80,29 @@ contract Game {
     }
 
     /**
-     * @dev See {IERC721-transferFrom}.
+     * @dev transfer token specified by `tokenId` from `from` to `to`
      */
     function transferFrom(address from, address to, uint256 tokenId) public {
         //solhint-disable-next-line max-line-length
-        require(ownerOf(tokenId) == msg.sender, "caller is not token owner");
+        require(
+            ownerOf(tokenId) == msg.sender ||
+                _tokenApprovals[tokenId] == msg.sender,
+            "caller is not the token owner or approved account"
+        );
 
         _balances[from] -= 1;
         _balances[to] += 1;
 
         _owners[tokenId] = to;
 
+        // Clear approvals from the previous owner
+        delete _tokenApprovals[tokenId];
+
         emit Transfer(from, to, tokenId);
     }
 
     /**
-     * @dev See {IERC721-balanceOf}.
+     * @dev return token amount of certain account
      */
     function balanceOf(address owner) public view returns (uint256) {
         require(owner != address(0), "address zero is not a valid owner");
@@ -95,5 +114,27 @@ contract Game {
      */
     function ownerOf(uint256 tokenId) public view returns (address) {
         return _owners[tokenId];
+    }
+
+    /**
+     * @dev Approve `to` to operate on `tokenId`
+     */
+    function approve(address to, uint256 tokenId) public {
+        address owner = ownerOf(tokenId);
+        require(to != owner, "approval to current owner");
+
+        require(msg.sender == owner, "approve caller is not token owner");
+
+        _approve(to, tokenId);
+    }
+
+    /**
+     * @dev Approve `to` to operate on `tokenId`
+     *
+     * Emits an {Approval} event.
+     */
+    function _approve(address to, uint256 tokenId) internal virtual {
+        _tokenApprovals[tokenId] = to;
+        emit Approval(ownerOf(tokenId), to, tokenId);
     }
 }

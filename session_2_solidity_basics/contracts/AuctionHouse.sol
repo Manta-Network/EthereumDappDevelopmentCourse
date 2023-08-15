@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import "./interfaces/IItem.sol";
 
 contract AuctionHouse {
+    // information of an auction
     struct Auction {
         string name; // the name of this auction
         address payable seller; // the seller of this auction
@@ -16,14 +17,19 @@ contract AuctionHouse {
         uint256 identifier; // the identifier of this item
     }
 
+    // administrator of this contract
     address public admin;
 
+    // record auctionId's corresponding auction information
     mapping(uint => Auction) public auctions;
 
     // Added pendingReturns mapping
     mapping(address => uint) public pendingReturns;
 
     uint public nextAuctionId;
+
+    // whether this auction house has been paused
+    bool private _auctionHousePaused;
 
     event CreateAuction(
         address indexed seller,
@@ -48,6 +54,21 @@ contract AuctionHouse {
 
     constructor() {
         admin = msg.sender;
+        _auctionHousePaused = false;
+    }
+
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "ONLY ADMIN");
+        _;
+    }
+
+    modifier onlyOpen() {
+        require(!_auctionHousePaused, "ONLY OPEN");
+        _;
+    }
+
+    function pauseAuctionHouse(bool _paused) public onlyAdmin {
+        _auctionHousePaused = _paused;
     }
 
     function createAuction(
@@ -57,8 +78,10 @@ contract AuctionHouse {
         uint endBlock,
         address token,
         uint256 identifier
-    ) public {
-        Auction storage auction = auctions[nextAuctionId];
+    ) public onlyOpen returns (uint) {
+        uint assignedAuctionId = nextAuctionId;
+
+        Auction storage auction = auctions[assignedAuctionId];
         auction.name = name;
         auction.seller = payable(msg.sender);
         auction.startPrice = startPrice;
@@ -70,13 +93,16 @@ contract AuctionHouse {
         emit CreateAuction(msg.sender, nextAuctionId, token, identifier);
 
         nextAuctionId++;
+
+        return assignedAuctionId;
     }
 
-    function bid(uint auctionId) public payable {
+    function bid(uint auctionId) public payable virtual onlyOpen {
         Auction storage auction = auctions[auctionId];
-        require(block.number >= auction.startBlock);
-        require(block.number <= auction.endBlock);
-        require(msg.value > auction.highestBid);
+
+        require(block.number >= auction.startBlock, "invalid time:1");
+        require(block.number <= auction.endBlock, "invalid time:2");
+        require(msg.value > auction.highestBid, "lower than start price");
 
         if (auction.highestBidder != address(0)) {
             pendingReturns[auction.highestBidder] += auction.highestBid;
@@ -116,7 +142,7 @@ contract AuctionHouse {
             auction.seller.transfer(auction.highestBid);
 
             IItem(auction.token).transferFrom(
-                address(this),
+                address(auction.seller),
                 auction.highestBidder,
                 auction.identifier
             );
