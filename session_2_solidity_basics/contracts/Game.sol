@@ -85,8 +85,8 @@ contract Game {
     function transferFrom(address from, address to, uint256 tokenId) public {
         //solhint-disable-next-line max-line-length
         require(
-            ownerOf(tokenId) == msg.sender ||
-                _tokenApprovals[tokenId] == msg.sender,
+            ownerOf(tokenId) == from &&
+                (from == msg.sender || _tokenApprovals[tokenId] == msg.sender),
             "caller is not the token owner or approved account"
         );
 
