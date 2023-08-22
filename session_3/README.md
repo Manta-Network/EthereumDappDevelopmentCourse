@@ -77,6 +77,10 @@ event Approval(address indexed _owner, address indexed _spender, uint256 _value)
 ### SimpleToken
 [SimpleToken](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-3/session_3/contracts/SimpleToken.sol)
 
+deploy the contract:
+- config network in hardhat.config.ts
+- ```npx hardhat run scripts/deploy_simple_token.ts --network manta```
+
 ### USDT using OpenZeppelin
 [USDT](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-3/session_3/contracts/USDT.sol)
 
