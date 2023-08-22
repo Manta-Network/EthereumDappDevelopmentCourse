@@ -8,8 +8,4 @@ contract USDT is ERC20 {
     ) ERC20("USDT", "USDT") {
         _mint(msg.sender, 1000000);
     }
-
-    function decimals() public view virtual override returns (uint8) {
-        return 0;
-    }
 }

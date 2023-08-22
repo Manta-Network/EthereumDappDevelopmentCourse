@@ -24,7 +24,7 @@ describe("erc20 tests", function () {
     beforeEach(async function () {});
 
     it("deposit", async function () {
-      await usdtContract.approve(bankContract.getAddress(), 100);
+      await usdtContract.connect(user).approve(bankContract.getAddress(), 100);
       console.log("user approved the bank");
 
       await bankContract.connect(user).deposit(20);
