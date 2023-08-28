@@ -1,7 +1,8 @@
 # ERC721
 
-- What is a NFT
+## What is NFT/ERC721
 
+- NFT
 A Non-Fungible Token (NFT) is used to identify something or someone in a unique way. This type of Token is perfect to be used on platforms that offer collectible items, access keys, lottery tickets, numbered seats for concerts and sports matches, etc. This special type of Token has amazing possibilities so it deserves a proper Standard, the ERC-721 came to solve that!
 
 - ERC721
@@ -98,25 +99,17 @@ event ApprovalForAll(address indexed _owner, address indexed _operator, bool _ap
 ## Write a ERC721 contract
 
 ### SimpleERC721Token
-[SimpleToken](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-3/session_3/contracts/SimpleToken.sol)
+[SimpleERC721Token](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-4/session_4/contracts/SimpleERC721Token.sol)
 
-deploy the contract:
-- config network in hardhat.config.ts
-- ```npx hardhat run scripts/deploy_simple_token.ts --network manta```
+### MyNFT
+[Poker](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-4/session_4/contracts/myNFT.sol)
 
-### USDT using OpenZeppelin
-[USDT](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-3/session_3/contracts/USDT.sol)
-
-publish & verify contracts on explorer:
-- ```npx hardhat flatten contracts/Bank.sol > temp.sol```
-- remove duplicated LICENSE line.
-- verify
-
-### Using ERC20 in other contracts
-[Bank](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-3/session_3/contracts/Bank.sol)
-
-full flow of bank logic:
-- user approve bank contract to spend his USDT
-- user deposit
-  - user -> ```deposit``` in bank contract -> ```transferFrom``` in usdt contract
-- user withdraw
+OPTIOANL
+- metadata: IERC721Metadata
+  - name
+  - symbol
+  - tokenURI
+- enumeration: ERC721Enumerable(includes ERC721 & IERC721Metadata)
+  - totalSupply
+  - tokenByIndex
+  - tokenOfOwnerByIndex
