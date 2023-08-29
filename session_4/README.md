@@ -102,14 +102,26 @@ event ApprovalForAll(address indexed _owner, address indexed _operator, bool _ap
 [SimpleERC721Token](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-4/session_4/contracts/SimpleERC721Token.sol)
 
 ### MyNFT
-[Poker](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-4/session_4/contracts/myNFT.sol)
+[MyNFT](https://github.com/Manta-Network/EthereumDappDevelopmentCourse/blob/session-4/session_4/contracts/MyNFT.sol)
 
-OPTIOANL
+OPTIOANL extensions
 - metadata: IERC721Metadata
-  - name
-  - symbol
-  - tokenURI
+  - name: 
+  A descriptive name for a collection of NFTs in this contract.
+
+  - symbol: 
+  An abbreviated name for NFTs in this contract
+
+  - tokenURI: 
+  A distinct Uniform Resource Identifier (URI) for a given asset.
+
 - enumeration: ERC721Enumerable(includes ERC721 & IERC721Metadata)
-  - totalSupply
-  - tokenByIndex
-  - tokenOfOwnerByIndex
+  - totalSupply: 
+  Count NFTs tracked by this contract
+
+  - tokenByIndex:
+  Enumerate valid NFTs
+
+  - tokenOfOwnerByIndex:
+  Enumerate NFTs assigned to an owner
+

@@ -1,19 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract SimpleToken {
+contract SimpleERC721Token {
+    uint256 public tokenIdCounter;
+
     // Mapping from tokenID to owner
     mapping(uint256 => address) private tokenOwners;
 
-    // Mapping from user to count of nfts
+    // Mapping from owner to count of nfts
     mapping(address => uint256) private balances;
 
-    // Mapping from tokenID to approved address
-    // approved address can transfer the token
+    // Mapping from tokenID to operator
+    // operator can transfer the token
     mapping(uint256 => address) private tokenApprovals;
 
-    // Mapping from owner to operator approvals
-    // operator can transfer owner's all nfts
+    // Mapping from owner to operator,
+    // operator can transfer all nfts of the owner
     mapping(address => mapping(address => bool)) private operatorApprovals;
 
     event Transfer(
@@ -33,6 +35,13 @@ contract SimpleToken {
     );
 
     constructor() {}
+
+    function mint() external {
+        tokenOwners[tokenIdCounter] = msg.sender;
+        tokenIdCounter++;
+
+        balances[msg.sender] += 1;
+    }
 
     function balanceOf(address owner) external view returns (uint256) {
         return balances[owner];
@@ -56,8 +65,10 @@ contract SimpleToken {
     }
 
     function setApprovalForAll(address operator, bool _approved) external {
-        operatorApprovals[msg.sender][operator] = _approved;
-        emit ApprovalForAll(msg.sender, operator, _approved);
+        address owner = msg.sender;
+
+        operatorApprovals[owner][operator] = _approved;
+        emit ApprovalForAll(owner, operator, _approved);
     }
 
     function isApprovedForAll(
@@ -69,13 +80,13 @@ contract SimpleToken {
 
     function transferFrom(
         address from,
-        address to,
+        address receiver,
         uint256 tokenId
     ) public {
         /*
-          - owner can transfer NFT
-          - operator of the owner can transfer NFT
-          - operator of the token can transfer NFT
+          - caller is the owner of the token
+          - caller is the operator of the token's owner
+          - caller is the operator of the token
         */
         address owner = tokenOwners[tokenId];
         require(
@@ -85,25 +96,25 @@ contract SimpleToken {
         );
         require(from == tokenOwners[tokenId], "Not the token owner");
 
-        tokenOwners[tokenId] = to;
+        tokenOwners[tokenId] = receiver;
         balances[from] -= 1;
-        balances[to] += 1;
+        balances[receiver] += 1;
 
+        // need to delete the tokenApprovals because the token's owner has changed
         delete tokenApprovals[tokenId];
 
-        emit Transfer(from, to, tokenId);
+        emit Transfer(from, receiver, tokenId);
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId) external {
-        safeTransferFrom(from, to, tokenId, "");
+    function safeTransferFrom(address from, address receiver, uint256 tokenId) external {
+        safeTransferFrom(from, receiver, tokenId, "");
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public {
-        transferFrom(from, to, tokenId);
+    function safeTransferFrom(address from, address receiver, uint256 tokenId, bytes memory data) public {
+        transferFrom(from, receiver, tokenId);
         // if to is a contract address, data will be executed
-        if (to.code.length > 0) {
-            (bool success, ) = to.call(data);
-            require(success);
+        if (receiver.code.length > 0) {
+            // call the to address
         }
     }
 }

@@ -17,9 +17,13 @@ const config: HardhatUserConfig = {
   },
 
   networks: {
-    manta: {
+    "manta": {
       accounts: [process.env.PRIVATE_KEY as string],
       url: "https://manta-testnet.calderachain.xyz/http"
+    },
+    "arb-goerli": {
+      accounts: [process.env.PRIVATE_KEY as string],
+      url: "https://arbitrum-goerli.blockpi.network/v1/rpc/public"
     }
   },
 };

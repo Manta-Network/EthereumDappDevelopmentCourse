@@ -20,6 +20,7 @@ contract MyNFT is ERC721Enumerable {
         return "https://example.com/token/";
     }
 
+    // link to the picture associated with the token
     function tokenURI(uint256 tokenId) public pure override returns (string memory) {
         return string(abi.encodePacked(_baseURI(), Strings.toString(tokenId)));
     }
