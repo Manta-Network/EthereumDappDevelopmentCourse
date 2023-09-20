@@ -1,6 +1,6 @@
 import type { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address';
 import { ethers } from 'hardhat';
-import { ConstantStorageExample } from '../types/ConstantStorageExample';
+import { ConstantStorageExample } from '../types/Level1/ConstantStorageExample';
 
 
 

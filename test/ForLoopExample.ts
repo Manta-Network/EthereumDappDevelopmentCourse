@@ -1,6 +1,6 @@
 import type { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address';
 import { ethers } from 'hardhat';
-import { ForLoopExample } from '../types/ForLoopExample';
+import { ForLoopExample } from '../types/Level1/ForLoopExample';
 
 
 
