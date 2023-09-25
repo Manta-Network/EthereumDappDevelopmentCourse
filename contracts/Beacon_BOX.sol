@@ -1,6 +1,6 @@
 pragma solidity ^0.8.17;
 
-contract Box {
+contract Beacon_BOX {
     uint256 private value;
 
     // Emitted when the stored value changes

@@ -15,27 +15,18 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: { allowUnlimitedContractSize: true },
-    goerli: {
-      chainId: 5,
+    mumbai: {
+      chainId: 80001,
       url: process.env.ALCHEMY_API,
       accounts: [
         process.env.DEPLOYER as string,
-        process.env.MULTISIGWALLETOWNER1 as string,
-        process.env.MULTISIGWALLETOWNER2 as string,
-        process.env.MULTISIGWALLETOWNER3 as string,
-        process.env.ACCEPTER as string,
       ],
       gas: 10000000,
-      //   allowUnlimitedContractSize: true,
     },
+    
   },
-  //   gasReporter: {
-  //     outputFile: "gas-report.txt",
-  //     enabled: true,
-  //     currency: "USD",
-  //     noColors: true,
-  //     coinmarketcap: process.env.COIN_MARKETCAP_API_KEY || "",
-  //     token: "ETH",
-  //   },
+  etherscan:{
+    apiKey:process.env.mumbaiApiKey
+  }
 };
 export default config;

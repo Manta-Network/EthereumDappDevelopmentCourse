@@ -1,5 +1,5 @@
 {
-  "name": "domaintrade",
+  "name": "upgradablecontract",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -21,27 +21,20 @@
     "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
     "chai": "^4.3.6",
-    "ethers": "^5.7.2",
+    "ethers": "^6.0.0",
     "hardhat": "^2.11.2",
-    "hardhat-gas-reporter": "^1.0.9",
     "solidity-coverage": "^0.8.2",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.0",
-    "typescript": "^4.8.4"
-  },
-  "dependencies": {
-    "@gnosis.pm/mock-contract": "^4.0.0",
-    "@gnosis.pm/safe-singleton-factory": "^1.0.11",
-    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "typescript": "^4.8.4",
     "@openzeppelin/contracts": "^3.4.2",
-    "bignumber.js": "^9.1.0",
-    "crypto": "^1.0.1",
-    "dotbit": "^0.4.17",
     "dotenv": "^16.0.3",
     "hardhat-deploy": "^0.11.20",
     "hardhat-gas-reporter": "^1.0.9",
-    "install": "^0.13.0",
-    "lodash": "^4.17.21",
-    "uniswap-price": "^1.0.4"
-  }
+    "@nomicfoundation/hardhat-ethers": "^3.0.4",
+    "@nomicfoundation/hardhat-verify": "^1.1.1",
+    "@openzeppelin/hardhat-upgrades": "^2.2.1",
+    "@openzeppelin/contracts-upgradeable": "^4.9.3"
+  },
+  "dependencies": {}
 }
