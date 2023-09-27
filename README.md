@@ -1,13 +1,15 @@
-# Sample Hardhat Project
+# Solidity Proxy Contracts with Hardhat
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This repository provides an example implementation of Solidity proxy contracts using the Hardhat development environment. It demonstrates the usage of both Transparent and UUPS proxies for achieving upgradability in Ethereum smart contracts.
 
-Try running some of the following tasks:
+# Install
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+```
+npm i
+```
+
+## Test 
+
+```
+npx hardhat test ./test/basic.test.ts
 ```
