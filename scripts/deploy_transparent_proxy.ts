@@ -7,11 +7,13 @@ import { ethers, upgrades } from "hardhat";
 async function main() {
   const [deployer] = await ethers.getSigners();
   console.log("deplpyer address: ", await deployer.getAddress());
+
   const Transparent_Proxy_NFT = await ethers.getContractFactory(
     "Transparent_Proxy_NFT",
     deployer as any as Signer
   );
-  console.log("Deploying Box...");
+
+  console.log("Deploying Transparent_Proxy_NFT...");
   const proxy = await upgrades.deployProxy(
     Transparent_Proxy_NFT as any,
     ["My NFT", "M"],
